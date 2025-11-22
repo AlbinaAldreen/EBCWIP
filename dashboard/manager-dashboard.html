@@ -8,6 +8,27 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="js/ux-enhancements.js"></script>
     <style>
+        /* Professional Header Customization */
+        .header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+        }
+        .header-logo .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+        }
+        .header-center {
+            display: flex;
+            justify-content: center;
+        }
+        .header-right {
+            display: flex;
+            justify-content: flex-end;
+        }
+
         /* Additional styles for manager dashboard layout */
         .charts-section {
             margin-bottom: 24px;
@@ -175,23 +196,16 @@
     <header class="header">
         <div class="header-left">
             <div class="header-logo">
-                <span class="logo-icon">🍰</span>
-                <div>
-                    <div class="logo-text">Emily Bakes</div>
-                    <div class="logo-subtext">CAKES</div>
-                </div>
+                <div class="logo-text">Emily Bakes Cakes</div>
             </div>
+        </div>
+        <div class="header-center">
             <div class="header-user">
                 <div class="role-badge" id="staff-role">Staff</div>
                 <div class="manager-name" id="staff-name">Loading...</div>
             </div>
         </div>
         <div class="header-right">
-            <div class="header-stat">
-                <span>📦</span>
-                <span id="header-pickup-count">0</span>
-                <span class="header-stat-value">pickups today</span>
-            </div>
             <button class="header-btn" onclick="backToSite()">← Back to Site</button>
             <button class="logout-btn header-btn" onclick="handleLogout()">Logout</button>
         </div>
@@ -200,11 +214,11 @@
     <!-- LEFT NAVIGATION -->
     <nav class="nav-sidebar">
         <ul>
-            <li><a href="manager-dashboard.html" class="nav-link active">📊 Dashboard</a></li>
-            <li><a href="all-orders.html" class="nav-link">📋 View Orders</a></li>
-            <li><a href="all-customers.html" class="nav-link">👥 View Customers</a></li>
-            <li><a href="view-products.html" class="nav-link">🎂 View Products</a></li>
-            <li><a href="reports.html" class="nav-link">📈 Reports</a></li>
+            <li><a href="manager-dashboard.html" class="nav-link active">Dashboard</a></li>
+            <li><a href="all-orders.html" class="nav-link">View Orders</a></li>
+            <li><a href="all-customers.html" class="nav-link">View Customers</a></li>
+            <li><a href="view-products.html" class="nav-link">View Products</a></li>
+            <li><a href="reports.html" class="nav-link">Reports</a></li>
         </ul>
     </nav>
 
@@ -215,19 +229,19 @@
             <div class="charts-section">
                 <div class="charts-grid">
                     <div class="chart-card">
-                        <h3 class="chart-title">📈 Revenue Trend (7 Days)</h3>
+                        <h3 class="chart-title">Revenue Trend (7 Days)</h3>
                         <div class="chart-container">
                             <canvas id="revenueChart"></canvas>
                         </div>
                     </div>
                     <div class="chart-card">
-                        <h3 class="chart-title">🍰 Popular Products</h3>
+                        <h3 class="chart-title">Popular Products</h3>
                         <div class="chart-container">
                             <canvas id="productsChart"></canvas>
                         </div>
                     </div>
                     <div class="chart-card">
-                        <h3 class="chart-title">📊 Order Status Distribution</h3>
+                        <h3 class="chart-title">Order Status Distribution</h3>
                         <div class="chart-container">
                             <canvas id="statusChart"></canvas>
                         </div>
