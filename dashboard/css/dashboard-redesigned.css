@@ -704,3 +704,67 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
 }
+
+/* ====================================================================
+   ADDITIONAL STATUS BADGE VARIANTS
+   ==================================================================== */
+
+/* Status badges with 'badge-' prefix for consistency */
+.badge-pending,
+.badge-to-be-created {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+}
+
+.badge-baking,
+.badge-in-baking {
+    background: rgba(168, 85, 247, 0.1);
+    color: var(--purple);
+}
+
+.badge-decorating {
+    background: rgba(196, 69, 105, 0.1);
+    color: var(--primary);
+}
+
+.badge-ready {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.badge-completed,
+.badge-picked-up {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.badge-confirmed {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--info);
+}
+
+.badge-cancelled {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+/* Ensure consistent text styling */
+.status-badge,
+.badge-pending,
+.badge-to-be-created,
+.badge-baking,
+.badge-in-baking,
+.badge-decorating,
+.badge-ready,
+.badge-completed,
+.badge-picked-up,
+.badge-confirmed,
+.badge-cancelled {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+}
