@@ -263,8 +263,8 @@
                 localStorage.setItem('staffUser', username);
                 localStorage.setItem('staffRole', role);
 
-                // Redirect to products page with role parameter
-                window.location.href = `staff-products.html?role=${role}`;
+                // Redirect to dashboard
+                window.location.href = 'dashboard/index.html';
             } else {
                 alert('Invalid credentials. Please check your username and password.');
             }

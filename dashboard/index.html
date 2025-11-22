@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard - Emily Bakes Cakes</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <div class="role-badge" id="staff-role">Staff</div>
+            <div class="manager-name" id="staff-name">Loading...</div>
+        </div>
+        <div class="header-right">
+            <div class="pickup-badge" id="header-pickup-count">0 pickups today</div>
+            <button class="header-btn" onclick="backToSite()">Back to Site</button>
+            <button class="logout-btn header-btn" onclick="handleLogout()">Logout</button>
+        </div>
+    </header>
+
+    <!-- LEFT NAVIGATION -->
+    <nav class="nav-sidebar">
+        <ul>
+            <li><a href="index.html" class="nav-link active">Dashboard</a></li>
+            <li><a href="orders.html" class="nav-link">Orders</a></li>
+            <li><a href="customers.html" class="nav-link">Customers</a></li>
+            <li><a href="reports.html" class="nav-link">Reports</a></li>
+            <li><a href="settings.html" class="nav-link">Settings</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="content">
+            <!-- SUMMARY CARDS -->
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="card-number" id="pending-pickup-count">0</div>
+                    <div class="card-label">Pending Pickups</div>
+                    <a href="pending_pickups.html" class="card-action">View Details →</a>
+                </div>
+                <div class="summary-card">
+                    <div class="card-number" id="todays-orders-count">0</div>
+                    <div class="card-label">Today's Orders</div>
+                    <a href="todays_orders.html" class="card-action">View Details →</a>
+                </div>
+                <div class="summary-card">
+                    <div class="card-number" id="weekly-revenue">$0.00</div>
+                    <div class="card-label">Weekly Revenue</div>
+                    <a href="reports.html" class="card-action">View Reports →</a>
+                </div>
+                <div class="summary-card">
+                    <div class="card-number" id="new-customers-count">0</div>
+                    <div class="card-label">New Customers</div>
+                    <a href="customers.html" class="card-action">View Details →</a>
+                </div>
+            </div>
+
+            <!-- QUICK ACTION BUTTONS -->
+            <div class="action-buttons">
+                <button class="action-btn-primary" onclick="alert('Create New Order - Coming Soon')">+ Create New Order</button>
+                <a href="orders.html" class="action-btn-primary">View All Orders</a>
+                <button class="action-btn-primary" onclick="alert('Add Customer - Coming Soon')">+ Add Customer</button>
+                <button class="action-btn-primary" onclick="alert('Find Customer - Coming Soon')">🔍 Find Customer</button>
+                <a href="reports.html" class="action-btn-primary">📊 Financial Reports</a>
+                <button class="action-btn-primary" onclick="alert('Print Daily Summary - Coming Soon')">🖨️ Print Daily Summary</button>
+            </div>
+
+            <!-- STATUS OVERVIEW -->
+            <div class="section-header" style="margin-bottom: 20px;">
+                <h2 class="section-title">Status Overview</h2>
+            </div>
+            <div class="status-boxes">
+                <div class="status-box baking">
+                    <div class="status-number" id="status-baking">0</div>
+                    <div class="status-label">Pending Baking</div>
+                </div>
+                <div class="status-box decorating">
+                    <div class="status-number" id="status-decorating">0</div>
+                    <div class="status-label">Pending Decorating</div>
+                </div>
+                <div class="status-box ready">
+                    <div class="status-number" id="status-ready">0</div>
+                    <div class="status-label">Ready for Pickup</div>
+                </div>
+            </div>
+
+            <!-- CHARTS -->
+            <div class="section-header" style="margin-bottom: 20px; margin-top: 40px;">
+                <h2 class="section-title">Analytics</h2>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Today's Order Status</div>
+                    <div class="chart-container">
+                        <canvas id="todaysStatusChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Top Selling Products</div>
+                    <div class="chart-container">
+                        <canvas id="topProductsChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Quarterly Revenue</div>
+                    <div class="chart-container">
+                        <canvas id="quarterlyRevenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TODAY'S PICKUPS TABLE -->
+            <div class="section-header" style="margin-bottom: 16px; margin-top: 40px;">
+                <h2 class="section-title">Today's Pickups</h2>
+                <a href="pending_pickups.html" class="section-link">View All →</a>
+            </div>
+            <div class="table-container">
+                <div class="table-content">
+                    <table id="todays-pickups-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Cake</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 32px;">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TOMORROW'S SCHEDULE -->
+            <div class="section-header" style="margin-bottom: 16px; margin-top: 40px;">
+                <h2 class="section-title">Tomorrow's Schedule Preview</h2>
+                <a href="#" class="section-link">View Full Schedule →</a>
+            </div>
+            <div class="table-container">
+                <div id="tomorrows-schedule" style="padding: 0;">
+                    <div class="schedule-item">
+                        <div class="schedule-time">Loading...</div>
+                        <div class="schedule-info"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
