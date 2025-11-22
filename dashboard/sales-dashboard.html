@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Dashboard - Emily Bakes Cakes</title>
+    <link rel="stylesheet" href="css/dashboard-improved.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <div class="header-logo">💼 EBC Dashboard</div>
+            <div class="header-user">
+                <div class="role-badge" id="staff-role">Staff</div>
+                <div class="manager-name" id="staff-name">Loading...</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-stat">
+                <span>💰</span>
+                <span id="header-today-sales">$0</span>
+                <span class="header-stat-value">today's sales</span>
+            </div>
+            <button class="header-btn" onclick="backToSite()">← Back to Site</button>
+            <button class="logout-btn header-btn" onclick="handleLogout()">Logout</button>
+        </div>
+    </header>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="nav-sidebar">
+        <ul>
+            <li><a href="sales-dashboard.html" class="nav-link active">
+                💼 Dashboard
+            </a></li>
+            <li><a href="sales-orders.html" class="nav-link">
+                📋 Orders
+            </a></li>
+            <li><a href="sales-customers.html" class="nav-link">
+                👥 Customers
+            </a></li>
+            <li><a href="sales-targets.html" class="nav-link">
+                🎯 Targets
+            </a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="content">
+            <!-- PAGE HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">Sales Performance</h1>
+                <p class="page-subtitle">Track your sales and customer interactions</p>
+            </div>
+
+            <!-- SALES METRICS CARDS -->
+            <div class="summary-grid">
+                <div class="summary-card" onclick="location.href='sales-orders.html'">
+                    <div class="card-icon">💰</div>
+                    <div class="card-number" id="daily-sales">$0.00</div>
+                    <div class="card-label">Today's Sales</div>
+                    <a href="sales-orders.html" class="card-action">View Orders →</a>
+                </div>
+                <div class="summary-card" onclick="location.href='sales-customers.html'">
+                    <div class="card-icon">👥</div>
+                    <div class="card-number" id="customers-contacted">0</div>
+                    <div class="card-label">Customers Contacted</div>
+                    <a href="sales-customers.html" class="card-action">View Details →</a>
+                </div>
+                <div class="summary-card" onclick="location.href='sales-orders.html'">
+                    <div class="card-icon">📦</div>
+                    <div class="card-number" id="pending-orders-sales">0</div>
+                    <div class="card-label">Pending Orders</div>
+                    <a href="sales-orders.html" class="card-action">View Orders →</a>
+                </div>
+                <div class="summary-card" onclick="location.href='sales-targets.html'">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-number" id="monthly-target">0%</div>
+                    <div class="card-label">Monthly Target</div>
+                    <a href="sales-targets.html" class="card-action">View Details →</a>
+                </div>
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="section-header">
+                <h2 class="section-title">Quick Actions</h2>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn-primary" onclick="alert('Create Order - Feature Coming')">➕ Create Order</button>
+                <a href="sales-customers.html" class="action-btn-primary">👥 My Customers</a>
+                <button class="action-btn-primary" onclick="alert('Call Log - Feature Coming')">📞 Call Customer</button>
+                <a href="sales-orders.html" class="action-btn-primary">📋 Orders</a>
+            </div>
+
+            <!-- SALES STATUS -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Sales Overview</h2>
+            </div>
+            <div class="status-boxes">
+                <div class="status-box baking">
+                    <div class="status-number" id="orders-today">0</div>
+                    <div class="status-label">Orders Today</div>
+                </div>
+                <div class="status-box decorating">
+                    <div class="status-number" id="repeat-customers">0</div>
+                    <div class="status-label">Repeat Customers</div>
+                </div>
+                <div class="status-box ready">
+                    <div class="status-number" id="conversion-rate">0%</div>
+                    <div class="status-label">Conversion Rate</div>
+                </div>
+            </div>
+
+            <!-- ANALYTICS SECTION -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Sales Analytics</h2>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Weekly Sales Trend</div>
+                    <div class="chart-container">
+                        <canvas id="weeklyTrendChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Top Selling Products</div>
+                    <div class="chart-container">
+                        <canvas id="topSellingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT ORDERS -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Your Recent Orders</h2>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Commission</th>
+                    </tr>
+                </thead>
+                <tbody id="sales-orders">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Sales-specific dashboard initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!checkAuthentication()) return;
+            updateHeaderWithUserInfo();
+            initializeNav();
+            initializeSalesDashboard();
+        });
+
+        function initializeSalesDashboard() {
+            // Get sales data
+            const todaysOrders = getTodaysOrders();
+            const dailySales = todaysOrders.reduce((sum, o) => sum + o.amount, 0);
+            const pendingOrders = todaysOrders.filter(o => o.status !== 'completed').length;
+            const newCustomers = getNewCustomers();
+
+            document.getElementById('daily-sales').textContent = '$' + dailySales.toFixed(2);
+            document.getElementById('customers-contacted').textContent = Math.floor(Math.random() * 30) + 10;
+            document.getElementById('pending-orders-sales').textContent = pendingOrders;
+            document.getElementById('monthly-target').textContent = '65%';
+            document.getElementById('header-today-sales').textContent = '$' + dailySales.toFixed(2);
+
+            // Status counts
+            document.getElementById('orders-today').textContent = todaysOrders.length;
+            document.getElementById('repeat-customers').textContent = Math.floor(todaysOrders.length * 0.6);
+            document.getElementById('conversion-rate').textContent = '78%';
+
+            // Initialize charts
+            initializeSalesCharts();
+
+            // Populate sales orders table
+            populateSalesOrders();
+        }
+
+        function populateSalesOrders() {
+            const orders = getTodaysOrders().slice(0, 8);
+            const tbody = document.getElementById('sales-orders');
+            tbody.innerHTML = '';
+
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                const commission = (order.amount * 0.05).toFixed(2);
+                row.innerHTML = `
+                    <td>#${order.id.substring(0, 8)}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.cakeType}</td>
+                    <td>$${order.amount.toFixed(2)}</td>
+                    <td><span class="status-badge badge-${order.status}">${order.status}</span></td>
+                    <td>$${commission}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function initializeSalesCharts() {
+            const ctx1 = document.getElementById('weeklyTrendChart').getContext('2d');
+            const ctx2 = document.getElementById('topSellingChart').getContext('2d');
+
+            const quarterlyData = getQuarterlyRevenue();
+            const topProducts = getTopProducts();
+
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Sales',
+                        data: [1200, 1900, 1500, 2200, 2800, 2100, 1800],
+                        borderColor: '#C44569',
+                        backgroundColor: 'rgba(196, 69, 105, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#C44569',
+                        pointBorderColor: 'white',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: topProducts.map(p => p.name),
+                    datasets: [{
+                        label: 'Sales',
+                        data: topProducts.map(p => p.count * 100),
+                        backgroundColor: '#10B981',
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

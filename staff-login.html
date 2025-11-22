@@ -263,8 +263,15 @@
                 localStorage.setItem('staffUser', username);
                 localStorage.setItem('staffRole', role);
 
-                // Redirect to dashboard
-                window.location.href = 'dashboard/index.html';
+                // Redirect to role-specific dashboard
+                const dashboardMap = {
+                    'manager': 'dashboard/manager-dashboard.html',
+                    'sales': 'dashboard/sales-dashboard.html',
+                    'baker': 'dashboard/baker-dashboard.html',
+                    'decorator': 'dashboard/decorator-dashboard.html',
+                    'accountant': 'dashboard/manager-dashboard.html'
+                };
+                window.location.href = dashboardMap[role] || 'dashboard/manager-dashboard.html';
             } else {
                 alert('Invalid credentials. Please check your username and password.');
             }

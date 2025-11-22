@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baker Dashboard - Emily Bakes Cakes</title>
+    <link rel="stylesheet" href="css/dashboard-improved.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <div class="header-logo">🍰 EBC Dashboard</div>
+            <div class="header-user">
+                <div class="role-badge" id="staff-role">Staff</div>
+                <div class="manager-name" id="staff-name">Loading...</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-stat">
+                <span>👨‍🍳</span>
+                <span id="header-baking-count">0</span>
+                <span class="header-stat-value">to bake today</span>
+            </div>
+            <button class="header-btn" onclick="backToSite()">← Back to Site</button>
+            <button class="logout-btn header-btn" onclick="handleLogout()">Logout</button>
+        </div>
+    </header>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="nav-sidebar">
+        <ul>
+            <li><a href="baker-dashboard.html" class="nav-link active">
+                🍰 Dashboard
+            </a></li>
+            <li><a href="baker-orders.html" class="nav-link">
+                📋 My Orders
+            </a></li>
+            <li><a href="baker-schedule.html" class="nav-link">
+                📅 Schedule
+            </a></li>
+            <li><a href="baker-notes.html" class="nav-link">
+                📝 Notes
+            </a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="content">
+            <!-- PAGE HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">Baker's Workstation</h1>
+                <p class="page-subtitle">Your daily baking tasks and schedule</p>
+            </div>
+
+            <!-- TODAY'S TASKS CARDS -->
+            <div class="summary-grid">
+                <div class="summary-card" onclick="location.href='baker-orders.html'">
+                    <div class="card-icon">👨‍🍳</div>
+                    <div class="card-number" id="pending-bake-count">0</div>
+                    <div class="card-label">Cakes to Bake</div>
+                    <a href="baker-orders.html" class="card-action">View Details →</a>
+                </div>
+                <div class="summary-card" onclick="location.href='baker-orders.html'">
+                    <div class="card-icon">✅</div>
+                    <div class="card-number" id="completed-bake-count">0</div>
+                    <div class="card-label">Completed Today</div>
+                    <a href="baker-orders.html" class="card-action">View Details →</a>
+                </div>
+                <div class="summary-card" onclick="location.href='baker-schedule.html'">
+                    <div class="card-icon">⏰</div>
+                    <div class="card-number" id="pending-hours">0h</div>
+                    <div class="card-label">Est. Time Remaining</div>
+                    <a href="baker-schedule.html" class="card-action">View Schedule →</a>
+                </div>
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="section-header">
+                <h2 class="section-title">Quick Actions</h2>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn-primary" onclick="alert('Mark Complete - Feature Coming')">✅ Mark Order Complete</button>
+                <button class="action-btn-primary" onclick="alert('Add Note - Feature Coming')">📝 Add Note</button>
+                <a href="baker-schedule.html" class="action-btn-primary">📅 View Schedule</a>
+            </div>
+
+            <!-- BAKING STATUS -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Your Baking Status</h2>
+            </div>
+            <div class="status-boxes">
+                <div class="status-box baking">
+                    <div class="status-number" id="status-pending-bake">0</div>
+                    <div class="status-label">In Progress</div>
+                </div>
+                <div class="status-box decorating">
+                    <div class="status-number" id="status-ready-decorate">0</div>
+                    <div class="status-label">Ready for Decoration</div>
+                </div>
+                <div class="status-box ready">
+                    <div class="status-number" id="status-completed-bake">0</div>
+                    <div class="status-label">Completed</div>
+                </div>
+            </div>
+
+            <!-- TODAY'S BAKING ORDERS -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Today's Baking Queue</h2>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Cake Type</th>
+                        <th>Quantity</th>
+                        <th>Flavor</th>
+                        <th>Status</th>
+                        <th>Deadline</th>
+                    </tr>
+                </thead>
+                <tbody id="baking-orders">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- SPECIAL INSTRUCTIONS -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Special Instructions</h2>
+            </div>
+            <div id="special-instructions" style="background: var(--surface); border: 1px solid var(--border-light); border-radius: 12px; padding: 24px; margin-bottom: 40px; min-height: 120px; color: var(--text-secondary);">
+                Loading special instructions...
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Baker-specific dashboard initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!checkAuthentication()) return;
+            updateHeaderWithUserInfo();
+            initializeNav();
+            initializeBakerDashboard();
+        });
+
+        function initializeBakerDashboard() {
+            // Get baker's tasks
+            const bakingOrders = getTodaysOrders().filter(o => o.status === 'baking' || o.status === 'pending');
+            const completedToday = getTodaysOrders().filter(o => o.status === 'completed').length;
+            
+            const pendingBake = bakingOrders.filter(o => o.status === 'baking').length;
+            const readyDecorate = bakingOrders.filter(o => o.status === 'pending').length;
+
+            document.getElementById('pending-bake-count').textContent = pendingBake;
+            document.getElementById('completed-bake-count').textContent = completedToday;
+            document.getElementById('pending-hours').textContent = Math.ceil(bakingOrders.length * 1.5) + 'h';
+            document.getElementById('header-baking-count').textContent = pendingBake;
+
+            // Status counts
+            document.getElementById('status-pending-bake').textContent = pendingBake;
+            document.getElementById('status-ready-decorate').textContent = readyDecorate;
+            document.getElementById('status-completed-bake').textContent = completedToday;
+
+            // Populate baking orders table
+            populateBakingOrders();
+
+            // Load special instructions
+            loadSpecialInstructions();
+        }
+
+        function populateBakingOrders() {
+            const orders = getTodaysOrders().slice(0, 8);
+            const tbody = document.getElementById('baking-orders');
+            tbody.innerHTML = '';
+
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>#${order.id.substring(0, 8)}</td>
+                    <td>${order.cakeType}</td>
+                    <td>1</td>
+                    <td>${order.flavor || 'Custom'}</td>
+                    <td><span class="status-badge badge-${order.status}">${order.status}</span></td>
+                    <td>${order.pickupDate}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadSpecialInstructions() {
+            const instructions = [
+                '🌰 Almond Delight: Use toasted almonds',
+                '🍫 Chocolate Dobberge: Extra chocolate layers',
+                '🍓 Strawberry Delight: Fresh berries on top'
+            ];
+
+            const container = document.getElementById('special-instructions');
+            container.innerHTML = instructions.map(instr => `<div style="padding: 8px 0; color: var(--text);">• ${instr}</div>`).join('');
+        }
+    </script>
+</body>
+</html>

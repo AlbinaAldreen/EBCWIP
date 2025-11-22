@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard - Emily Bakes Cakes</title>
+    <link rel="stylesheet" href="css/dashboard-improved.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <div class="header-logo">📊 EBC Dashboard</div>
+            <div class="header-user">
+                <div class="role-badge" id="staff-role">Staff</div>
+                <div class="manager-name" id="staff-name">Loading...</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-stat">
+                <span>📦</span>
+                <span id="header-pickup-count">0</span>
+                <span class="header-stat-value">pickups today</span>
+            </div>
+            <button class="header-btn" onclick="backToSite()">← Back to Site</button>
+            <button class="logout-btn header-btn" onclick="handleLogout()">Logout</button>
+        </div>
+    </header>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="nav-sidebar">
+        <ul>
+            <li><a href="manager-dashboard.html" class="nav-link active">
+                📊 Dashboard
+            </a></li>
+            <li><a href="manager-orders.html" class="nav-link">
+                📋 Orders
+            </a></li>
+            <li><a href="manager-customers.html" class="nav-link">
+                👥 Customers
+            </a></li>
+            <li><a href="manager-reports.html" class="nav-link">
+                📈 Reports
+            </a></li>
+            <li><a href="manager-settings.html" class="nav-link">
+                ⚙️ Settings
+            </a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="content">
+            <!-- PAGE HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">Welcome to Dashboard</h1>
+                <p class="page-subtitle">Overview of your bakery operations</p>
+            </div>
+
+            <!-- SUMMARY CARDS -->
+            <div class="summary-grid">
+                <div class="summary-card" onclick="location.href='manager-orders.html'">
+                    <div class="card-icon">📋</div>
+                    <div class="card-number" id="pending-pickup-count">0</div>
+                    <div class="card-label">Pending Orders</div>
+                    <a href="manager-orders.html" class="card-action">View Details →</a>
+                </div>
+                <div class="summary-card" onclick="location.href='manager-orders.html'">
+                    <div class="card-icon">🎂</div>
+                    <div class="card-number" id="todays-orders-count">0</div>
+                    <div class="card-label">Today's Orders</div>
+                    <a href="manager-orders.html" class="card-action">View Details →</a>
+                </div>
+                <div class="summary-card" onclick="location.href='manager-reports.html'">
+                    <div class="card-icon">💰</div>
+                    <div class="card-number" id="weekly-revenue">$0.00</div>
+                    <div class="card-label">Weekly Revenue</div>
+                    <a href="manager-reports.html" class="card-action">View Reports →</a>
+                </div>
+                <div class="summary-card" onclick="location.href='manager-customers.html'">
+                    <div class="card-icon">👥</div>
+                    <div class="card-number" id="new-customers-count">0</div>
+                    <div class="card-label">New Customers</div>
+                    <a href="manager-customers.html" class="card-action">View Details →</a>
+                </div>
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="section-header">
+                <h2 class="section-title">Quick Actions</h2>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn-primary" onclick="alert('Create New Order - Coming Soon')">➕ New Order</button>
+                <a href="manager-orders.html" class="action-btn-primary">📋 All Orders</a>
+                <button class="action-btn-primary" onclick="alert('Add Customer - Coming Soon')">➕ Add Customer</button>
+                <a href="manager-reports.html" class="action-btn-primary">📊 Reports</a>
+            </div>
+
+            <!-- STATUS OVERVIEW -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Order Status Overview</h2>
+            </div>
+            <div class="status-boxes">
+                <div class="status-box baking">
+                    <div class="status-number" id="status-baking">0</div>
+                    <div class="status-label">Pending Baking</div>
+                </div>
+                <div class="status-box decorating">
+                    <div class="status-number" id="status-decorating">0</div>
+                    <div class="status-label">Pending Decorating</div>
+                </div>
+                <div class="status-box ready">
+                    <div class="status-number" id="status-ready">0</div>
+                    <div class="status-label">Ready for Pickup</div>
+                </div>
+            </div>
+
+            <!-- ANALYTICS SECTION -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Analytics</h2>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Today's Order Status</div>
+                    <div class="chart-container">
+                        <canvas id="todaysStatusChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Top Products</div>
+                    <div class="chart-container">
+                        <canvas id="topProductsChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Quarterly Revenue</div>
+                    <div class="chart-container">
+                        <canvas id="quarterlyRevenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT ORDERS -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Recent Orders</h2>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Cake Type</th>
+                        <th>Status</th>
+                        <th>Pickup Date</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="recent-orders">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Manager-specific dashboard initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!checkAuthentication()) return;
+            updateHeaderWithUserInfo();
+            initializeNav();
+            initializeManagerDashboard();
+        });
+
+        function initializeManagerDashboard() {
+            // Populate summary cards
+            const pendingOrders = getTodaysOrders().filter(o => o.status !== 'completed').length;
+            const todayOrders = getTodaysOrders().length;
+            const weeklyRev = getWeeklyRevenue();
+            const newCust = getNewCustomers();
+
+            document.getElementById('pending-pickup-count').textContent = pendingOrders;
+            document.getElementById('todays-orders-count').textContent = todayOrders;
+            document.getElementById('weekly-revenue').textContent = '$' + weeklyRev.toFixed(2);
+            document.getElementById('new-customers-count').textContent = newCust;
+
+            // Update status counts
+            const statusCounts = getStatusCounts();
+            document.getElementById('status-baking').textContent = statusCounts.baking;
+            document.getElementById('status-decorating').textContent = statusCounts.decorating;
+            document.getElementById('status-ready').textContent = statusCounts.ready;
+
+            // Update header pickup count
+            const pickups = getTodaysOrders().filter(o => o.pickupDate === getTodayDate()).length;
+            document.getElementById('header-pickup-count').textContent = pickups;
+
+            // Initialize charts
+            initializeCharts();
+
+            // Populate recent orders
+            populateRecentOrders();
+        }
+
+        function populateRecentOrders() {
+            const orders = getTodaysOrders().slice(0, 5);
+            const tbody = document.getElementById('recent-orders');
+            tbody.innerHTML = '';
+
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>#${order.id.substring(0, 8)}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.cakeType}</td>
+                    <td><span class="status-badge badge-${order.status}">${order.status}</span></td>
+                    <td>${order.pickupDate}</td>
+                    <td>$${order.amount.toFixed(2)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function initializeCharts() {
+            const ctx1 = document.getElementById('todaysStatusChart').getContext('2d');
+            const ctx2 = document.getElementById('topProductsChart').getContext('2d');
+            const ctx3 = document.getElementById('quarterlyRevenueChart').getContext('2d');
+
+            const statusCounts = getStatusCounts();
+            const topProducts = getTopProducts();
+            const quarterlyData = getQuarterlyRevenue();
+
+            new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Baking', 'Decorating', 'Ready'],
+                    datasets: [{
+                        data: [statusCounts.baking, statusCounts.decorating, statusCounts.ready],
+                        backgroundColor: ['#F59E0B', '#A855F7', '#10B981'],
+                        borderColor: 'white',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: topProducts.map(p => p.name),
+                    datasets: [{
+                        label: 'Orders',
+                        data: topProducts.map(p => p.count),
+                        backgroundColor: '#C44569',
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: quarterlyData.labels,
+                    datasets: [{
+                        label: 'Revenue',
+                        data: quarterlyData.data,
+                        borderColor: '#C44569',
+                        backgroundColor: 'rgba(196, 69, 105, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#C44569',
+                        pointBorderColor: 'white',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
