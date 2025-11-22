@@ -18,7 +18,7 @@
             <h2>Emily Bakes Cakes</h2>
             <p class="nav-subtitle">Staff Portal</p>
         </div>
-        <ul class="nav-menu">
+        <ul class="nav-menu" id="navMenu">
             <li><a href="dashboard.html" class="nav-link active">
                 <span class="nav-icon">📊</span>
                 <span>Dashboard</span>
@@ -58,49 +58,244 @@
         </header>
 
         <!-- Dashboard Content -->
-        <div class="dashboard-content">
-            <!-- KPI Cards Row -->
-            <div class="kpi-row">
-                <div class="kpi-card kpi-blue">
-                    <h3>Orders Today</h3>
-                    <p class="kpi-number">12</p>
-                </div>
-                <div class="kpi-card kpi-amber">
-                    <h3>Pending Pickup</h3>
-                    <p class="kpi-number">5</p>
-                </div>
-                <div class="kpi-card kpi-green">
-                    <h3>Ready for Pickup</h3>
-                    <p class="kpi-number">3</p>
-                </div>
-                <div class="kpi-card kpi-purple">
-                    <h3>Weekly Revenue</h3>
-                    <p class="kpi-number">$2,450</p>
-                </div>
-            </div>
+        <div class="dashboard-content" id="dashboardContent">
+            <!-- KPI Cards will be dynamically generated -->
+            <div class="kpi-row" id="kpiRow"></div>
 
             <!-- Action Buttons Row -->
-            <div class="action-row">
-                <button class="action-btn primary-btn" onclick="alert('Create New Order - Coming Soon!')">Create New Order</button>
-                <button class="action-btn secondary-btn" onclick="alert('Add Customer - Coming Soon!')">Add Customer</button>
-            </div>
+            <div class="action-row" id="actionRow"></div>
 
             <!-- Charts Row -->
             <div class="charts-row">
                 <div class="chart-card">
-                    <h3>Today's Order Status</h3>
+                    <h3 id="chartTitle1">Today's Order Status</h3>
                     <canvas id="statusChart"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h3>Most Popular Cakes This Week</h3>
+                    <h3 id="chartTitle2">Most Popular Cakes This Week</h3>
                     <canvas id="popularChart"></canvas>
                 </div>
             </div>
 
-            <!-- Today's Pickups Table -->
-            <div class="table-section">
+            <!-- Data Table (role-specific) -->
+            <div class="table-section" id="dataTable"></div>
+
+            <!-- Tomorrow's Schedule (only for relevant roles) -->
+            <div class="schedule-section" id="scheduleSection" style="display: none;">
+                <h3>Tomorrow's Schedule</h3>
+                <div class="schedule-list" id="scheduleList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Comprehensive role-based configuration
+        const roleConfig = {
+            manager: {
+                name: 'Manager',
+                displayName: 'Sarah Johnson',
+                email: 'manager@emilybakes.com',
+                pickups: 8,
+                kpis: [
+                    { label: 'Orders Today', value: '12', color: 'blue', icon: '📦' },
+                    { label: 'Pending Pickup', value: '5', color: 'amber', icon: '⏳' },
+                    { label: 'Weekly Revenue', value: '$2,450', color: 'green', icon: '💰' },
+                    { label: 'Team Members', value: '8', color: 'purple', icon: '👥' }
+                ],
+                actions: [
+                    { label: 'View All Orders', primary: true },
+                    { label: 'Team Schedule', primary: false },
+                    { label: 'Financial Report', primary: false }
+                ],
+                showSchedule: true,
+                tableTitle: 'Today\'s Pickups',
+                chartTitle1: 'Order Status Overview',
+                chartTitle2: 'Top Selling Cakes'
+            },
+            sales: {
+                name: 'Sales Staff',
+                displayName: 'Sarah Johnson',
+                email: 'sales@emilybakes.com',
+                pickups: 5,
+                kpis: [
+                    { label: 'My Orders Today', value: '7', color: 'blue', icon: '📝' },
+                    { label: 'Pending Pickup', value: '5', color: 'amber', icon: '⏳' },
+                    { label: 'Ready for Pickup', value: '3', color: 'green', icon: '✅' },
+                    { label: 'My Sales Total', value: '$1,840', color: 'purple', icon: '💵' }
+                ],
+                actions: [
+                    { label: 'Create New Order', primary: true },
+                    { label: 'Add Customer', primary: false },
+                    { label: 'My Customers', primary: false }
+                ],
+                showSchedule: true,
+                tableTitle: 'My Today\'s Pickups',
+                chartTitle1: 'My Order Status',
+                chartTitle2: 'Popular Cake Requests'
+            },
+            baker: {
+                name: 'Baker',
+                displayName: 'Mike Baker',
+                email: 'baker@emilybakes.com',
+                pickups: 0,
+                kpis: [
+                    { label: 'In Baking', value: '4', color: 'amber', icon: '🍰' },
+                    { label: 'To Be Baked', value: '3', color: 'blue', icon: '📋' },
+                    { label: 'Completed Today', value: '8', color: 'green', icon: '✅' },
+                    { label: 'Urgent Orders', value: '2', color: 'purple', icon: '⚡' }
+                ],
+                actions: [
+                    { label: 'View Baking Queue', primary: true },
+                    { label: 'Mark as Complete', primary: false },
+                    { label: 'Ingredient Checklist', primary: false }
+                ],
+                showSchedule: true,
+                tableTitle: 'Today\'s Baking Schedule',
+                chartTitle1: 'Baking Progress',
+                chartTitle2: 'Cake Types to Bake'
+            },
+            decorator: {
+                name: 'Decorator',
+                displayName: 'Lisa Artiste',
+                email: 'decorator@emilybakes.com',
+                pickups: 0,
+                kpis: [
+                    { label: 'In Decorating', value: '2', color: 'purple', icon: '🎨' },
+                    { label: 'Awaiting Decoration', value: '4', color: 'blue', icon: '⏰' },
+                    { label: 'Completed Today', value: '6', color: 'green', icon: '✨' },
+                    { label: 'Custom Designs', value: '3', color: 'amber', icon: '🖌️' }
+                ],
+                actions: [
+                    { label: 'View Decoration Queue', primary: true },
+                    { label: 'Design Gallery', primary: false },
+                    { label: 'Mark Complete', primary: false }
+                ],
+                showSchedule: true,
+                tableTitle: 'Today\'s Decoration Schedule',
+                chartTitle1: 'Decoration Progress',
+                chartTitle2: 'Decoration Styles'
+            },
+            accountant: {
+                name: 'Accountant',
+                displayName: 'John Numbers',
+                email: 'accountant@emilybakes.com',
+                pickups: 0,
+                kpis: [
+                    { label: 'Today\'s Revenue', value: '$845', color: 'green', icon: '💰' },
+                    { label: 'Weekly Revenue', value: '$2,450', color: 'blue', icon: '📊' },
+                    { label: 'Pending Payments', value: '3', color: 'amber', icon: '⏳' },
+                    { label: 'Invoices Sent', value: '12', color: 'purple', icon: '📄' }
+                ],
+                actions: [
+                    { label: 'Generate Invoice', primary: true },
+                    { label: 'View Payments', primary: false },
+                    { label: 'Financial Reports', primary: false }
+                ],
+                showSchedule: false,
+                tableTitle: 'Recent Transactions',
+                chartTitle1: 'Revenue Breakdown',
+                chartTitle2: 'Payment Status'
+            }
+        };
+
+        // Sample order data
+        const orderData = [
+            { id: 5001, customer: 'Michael Chen', time: '10:00 AM', status: 'Ready', total: 85.00 },
+            { id: 5002, customer: 'Jessica Williams', time: '11:30 AM', status: 'Decorating', total: 120.00 },
+            { id: 5003, customer: 'David Martinez', time: '1:00 PM', status: 'In Baking', total: 95.00 },
+            { id: 5004, customer: 'Emily Thompson', time: '2:30 PM', status: 'Ready', total: 150.00 },
+            { id: 5005, customer: 'Robert Brown', time: '4:00 PM', status: 'To Be Created', total: 75.00 },
+            { id: 5006, customer: 'Amanda Garcia', time: '5:00 PM', status: 'Ready', total: 110.00 },
+            { id: 5007, customer: 'Christopher Lee', time: '5:30 PM', status: 'Decorating', total: 135.00 }
+        ];
+
+        const scheduleData = [
+            { time: '9:00 AM', customer: 'Alice Wong', order: 'Birthday Cake - 3 layer' },
+            { time: '11:00 AM', customer: 'Tom Harris', order: 'Wedding Cake - 5 layer' },
+            { time: '2:00 PM', customer: 'Nancy Drew', order: 'Cupcakes - 24 count' }
+        ];
+
+        // Get role from URL parameter
+        function getRoleFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('role') || localStorage.getItem('staffRole') || 'staff';
+        }
+
+        // Initialize dashboard based on role
+        function initDashboard() {
+            const role = getRoleFromURL();
+            const config = roleConfig[role] || roleConfig.sales;
+
+            // Update header
+            document.getElementById('staffName').textContent = `Welcome, ${config.displayName}`;
+            document.getElementById('staffRole').textContent = config.name;
+
+            // Update pickup badge
+            if (config.pickups > 0) {
+                document.getElementById('pickupBadge').textContent = `${config.pickups} Pickups Today`;
+            } else {
+                document.getElementById('pickupBadge').style.display = 'none';
+            }
+
+            // Generate KPI cards
+            generateKPICards(config.kpis);
+
+            // Generate action buttons
+            generateActionButtons(config.actions);
+
+            // Update chart titles
+            document.getElementById('chartTitle1').textContent = config.chartTitle1;
+            document.getElementById('chartTitle2').textContent = config.chartTitle2;
+
+            // Generate data table
+            generateDataTable(config.tableTitle);
+
+            // Show schedule if applicable
+            if (config.showSchedule) {
+                document.getElementById('scheduleSection').style.display = 'block';
+                generateSchedule();
+            }
+
+            // Store role
+            localStorage.setItem('staffRole', role);
+        }
+
+        // Generate KPI cards dynamically
+        function generateKPICards(kpis) {
+            const kpiRow = document.getElementById('kpiRow');
+            kpiRow.innerHTML = kpis.map(kpi => `
+                <div class="kpi-card kpi-${kpi.color}">
+                    <h3>${kpi.label}</h3>
+                    <p class="kpi-number">${kpi.icon} ${kpi.value}</p>
+                </div>
+            `).join('');
+        }
+
+        // Generate action buttons
+        function generateActionButtons(actions) {
+            const actionRow = document.getElementById('actionRow');
+            actionRow.innerHTML = actions.map(action => `
+                <button class="action-btn ${action.primary ? 'primary-btn' : 'secondary-btn'}"
+                        onclick="alert('${action.label} - Coming Soon!')">
+                    ${action.label}
+                </button>
+            `).join('');
+        }
+
+        // Generate data table
+        function generateDataTable(title) {
+            const tableSection = document.getElementById('dataTable');
+            const statusClasses = {
+                'Ready': 'status-ready',
+                'Decorating': 'status-decorating',
+                'In Baking': 'status-baking',
+                'To Be Created': 'status-pending'
+            };
+
+            tableSection.innerHTML = `
                 <div class="table-header">
-                    <h3>Today's Pickups</h3>
+                    <h3>${title}</h3>
                     <input type="text" id="searchBox" class="search-box" placeholder="Search orders...">
                 </div>
                 <table class="orders-table">
@@ -115,157 +310,74 @@
                         </tr>
                     </thead>
                     <tbody id="ordersTableBody">
-                        <tr>
-                            <td>#5001</td>
-                            <td>Michael Chen</td>
-                            <td>10:00 AM</td>
-                            <td><span class="status-badge status-ready">Ready</span></td>
-                            <td>$85.00</td>
-                            <td><button class="view-btn" onclick="alert('View Order #5001 - Coming Soon!')">View</button></td>
-                        </tr>
-                        <tr>
-                            <td>#5002</td>
-                            <td>Jessica Williams</td>
-                            <td>11:30 AM</td>
-                            <td><span class="status-badge status-decorating">Decorating</span></td>
-                            <td>$120.00</td>
-                            <td><button class="view-btn" onclick="alert('View Order #5002 - Coming Soon!')">View</button></td>
-                        </tr>
-                        <tr>
-                            <td>#5003</td>
-                            <td>David Martinez</td>
-                            <td>1:00 PM</td>
-                            <td><span class="status-badge status-baking">In Baking</span></td>
-                            <td>$95.00</td>
-                            <td><button class="view-btn" onclick="alert('View Order #5003 - Coming Soon!')">View</button></td>
-                        </tr>
-                        <tr>
-                            <td>#5004</td>
-                            <td>Emily Thompson</td>
-                            <td>2:30 PM</td>
-                            <td><span class="status-badge status-ready">Ready</span></td>
-                            <td>$150.00</td>
-                            <td><button class="view-btn" onclick="alert('View Order #5004 - Coming Soon!')">View</button></td>
-                        </tr>
-                        <tr>
-                            <td>#5005</td>
-                            <td>Robert Brown</td>
-                            <td>4:00 PM</td>
-                            <td><span class="status-badge status-pending">To Be Created</span></td>
-                            <td>$75.00</td>
-                            <td><button class="view-btn" onclick="alert('View Order #5005 - Coming Soon!')">View</button></td>
-                        </tr>
-                        <tr>
-                            <td>#5006</td>
-                            <td>Amanda Garcia</td>
-                            <td>5:00 PM</td>
-                            <td><span class="status-badge status-ready">Ready</span></td>
-                            <td>$110.00</td>
-                            <td><button class="view-btn" onclick="alert('View Order #5006 - Coming Soon!')">View</button></td>
-                        </tr>
-                        <tr>
-                            <td>#5007</td>
-                            <td>Christopher Lee</td>
-                            <td>5:30 PM</td>
-                            <td><span class="status-badge status-decorating">Decorating</span></td>
-                            <td>$135.00</td>
-                            <td><button class="view-btn" onclick="alert('View Order #5007 - Coming Soon!')">View</button></td>
-                        </tr>
+                        ${orderData.map(order => `
+                            <tr>
+                                <td>#${order.id}</td>
+                                <td>${order.customer}</td>
+                                <td>${order.time}</td>
+                                <td><span class="status-badge ${statusClasses[order.status]}">${order.status}</span></td>
+                                <td>$${order.total.toFixed(2)}</td>
+                                <td><button class="view-btn" onclick="alert('View Order #${order.id} - Coming Soon!')">View</button></td>
+                            </tr>
+                        `).join('')}
                     </tbody>
                 </table>
-            </div>
+            `;
 
-            <!-- Tomorrow's Schedule Preview -->
-            <div class="schedule-section">
-                <h3>Tomorrow's Schedule</h3>
-                <div class="schedule-list">
-                    <div class="schedule-item">
-                        <span class="schedule-time">9:00 AM</span>
-                        <span class="schedule-customer">Alice Wong</span>
-                        <span class="schedule-order">Birthday Cake - 3 layer</span>
-                    </div>
-                    <div class="schedule-item">
-                        <span class="schedule-time">11:00 AM</span>
-                        <span class="schedule-customer">Tom Harris</span>
-                        <span class="schedule-order">Wedding Cake - 5 layer</span>
-                    </div>
-                    <div class="schedule-item">
-                        <span class="schedule-time">2:00 PM</span>
-                        <span class="schedule-customer">Nancy Drew</span>
-                        <span class="schedule-order">Cupcakes - 24 count</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/dashboard.js"></script>
-    <script>
-        // Role-based configuration
-        const roleConfig = {
-            manager: {
-                name: 'Manager',
-                displayName: 'Sarah Johnson',
-                pickups: 8
-            },
-            sales: {
-                name: 'Sales Staff',
-                displayName: 'Sarah Johnson',
-                pickups: 5
-            },
-            baker: {
-                name: 'Baker',
-                displayName: 'Mike Baker',
-                pickups: 0
-            },
-            decorator: {
-                name: 'Decorator',
-                displayName: 'Lisa Artiste',
-                pickups: 0
-            },
-            accountant: {
-                name: 'Accountant',
-                displayName: 'John Numbers',
-                pickups: 0
-            }
-        };
-
-        // Get role from URL parameter
-        function getRoleFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('role') || localStorage.getItem('staffRole') || 'staff';
+            // Add search functionality
+            document.getElementById('searchBox').addEventListener('input', filterOrders);
         }
 
-        // Initialize dashboard based on role
-        function initDashboard() {
-            const role = getRoleFromURL();
-            const config = roleConfig[role] || { name: 'Staff', displayName: 'Staff Member', pickups: 5 };
+        // Generate schedule
+        function generateSchedule() {
+            const scheduleList = document.getElementById('scheduleList');
+            scheduleList.innerHTML = scheduleData.map(item => `
+                <div class="schedule-item">
+                    <span class="schedule-time">${item.time}</span>
+                    <span class="schedule-customer">${item.customer}</span>
+                    <span class="schedule-order">${item.order}</span>
+                </div>
+            `).join('');
+        }
 
-            // Update header with role-specific info
-            document.getElementById('staffName').textContent = `Welcome, ${config.displayName}`;
-            document.getElementById('staffRole').textContent = config.name;
+        // Filter orders function
+        function filterOrders() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const tableBody = document.getElementById('ordersTableBody');
+            const rows = tableBody.getElementsByTagName('tr');
 
-            // Update pickup badge
-            if (config.pickups > 0) {
-                document.getElementById('pickupBadge').textContent = `${config.pickups} Pickups Today`;
-            } else {
-                document.getElementById('pickupBadge').textContent = 'No Pickups';
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const cells = row.getElementsByTagName('td');
+                let found = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    const cellText = cells[j].textContent || cells[j].innerText;
+                    if (cellText.toLowerCase().indexOf(searchTerm) > -1) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                row.style.display = found ? '' : 'none';
             }
+        }
 
-            // Store role in localStorage for navigation
-            localStorage.setItem('staffRole', role);
+        // Logout function
+        function logout() {
+            localStorage.removeItem('staffUser');
+            localStorage.removeItem('staffRole');
+            window.location.href = 'staff-login.html';
         }
 
         // Check authentication on page load
         document.addEventListener('DOMContentLoaded', function() {
             const user = localStorage.getItem('staffUser');
             if (!user) {
-                // Not logged in, redirect to login page
                 window.location.href = 'staff-login.html';
                 return;
             }
 
-            // Initialize dashboard with role-specific data
             initDashboard();
         });
     </script>
