@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Dashboard - Emily Bakes Cakes</title>
-    <link rel="stylesheet" href="css/dashboard-improved.css">
+    <link rel="stylesheet" href="css/dashboard-redesigned.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 </head>
 <body>
     <!-- HEADER -->
     <header class="header">
         <div class="header-left">
-            <div class="header-logo">💼 EBC Dashboard</div>
+            <div class="header-logo">
+                <span class="logo-icon">🍰</span>
+                <div>
+                    <div class="logo-text">Emily Bakes</div>
+                    <div class="logo-subtext">CAKES</div>
+                </div>
+            </div>
             <div class="header-user">
                 <div class="role-badge" id="staff-role">Staff</div>
                 <div class="manager-name" id="staff-name">Loading...</div>
@@ -34,14 +40,20 @@
             <li><a href="sales-dashboard.html" class="nav-link active">
                 💼 Dashboard
             </a></li>
-            <li><a href="sales-orders.html" class="nav-link">
+            <li><a href="all-orders.html" class="nav-link">
                 📋 Orders
             </a></li>
-            <li><a href="sales-customers.html" class="nav-link">
+            <li><a href="all-customers.html" class="nav-link">
                 👥 Customers
             </a></li>
-            <li><a href="sales-targets.html" class="nav-link">
-                🎯 Targets
+            <li><a href="new-customer.html" class="nav-link">
+                ➕ New Customer
+            </a></li>
+            <li><a href="reports.html" class="nav-link">
+                📊 Reports
+            </a></li>
+            <li><a href="../order-form.html" class="nav-link">
+                🎂 Order Form
             </a></li>
         </ul>
     </nav>
@@ -57,29 +69,29 @@
 
             <!-- SALES METRICS CARDS -->
             <div class="summary-grid">
-                <div class="summary-card" onclick="location.href='sales-orders.html'">
+                <div class="summary-card" onclick="location.href='all-orders.html'">
                     <div class="card-icon">💰</div>
                     <div class="card-number" id="daily-sales">$0.00</div>
                     <div class="card-label">Today's Sales</div>
-                    <a href="sales-orders.html" class="card-action">View Orders →</a>
+                    <a href="all-orders.html" class="card-action">View Orders →</a>
                 </div>
-                <div class="summary-card" onclick="location.href='sales-customers.html'">
+                <div class="summary-card" onclick="location.href='all-customers.html'">
                     <div class="card-icon">👥</div>
                     <div class="card-number" id="customers-contacted">0</div>
                     <div class="card-label">Customers Contacted</div>
-                    <a href="sales-customers.html" class="card-action">View Details →</a>
+                    <a href="all-customers.html" class="card-action">View Details →</a>
                 </div>
-                <div class="summary-card" onclick="location.href='sales-orders.html'">
+                <div class="summary-card" onclick="location.href='all-orders.html'">
                     <div class="card-icon">📦</div>
                     <div class="card-number" id="pending-orders-sales">0</div>
                     <div class="card-label">Pending Orders</div>
-                    <a href="sales-orders.html" class="card-action">View Orders →</a>
+                    <a href="all-orders.html" class="card-action">View Orders →</a>
                 </div>
-                <div class="summary-card" onclick="location.href='sales-targets.html'">
+                <div class="summary-card" onclick="location.href='reports.html'">
                     <div class="card-icon">🎯</div>
                     <div class="card-number" id="monthly-target">0%</div>
                     <div class="card-label">Monthly Target</div>
-                    <a href="sales-targets.html" class="card-action">View Details →</a>
+                    <a href="reports.html" class="card-action">View Reports →</a>
                 </div>
             </div>
 
@@ -89,9 +101,9 @@
             </div>
             <div class="action-buttons">
                 <button class="action-btn-primary" onclick="alert('Create Order - Feature Coming')">➕ Create Order</button>
-                <a href="sales-customers.html" class="action-btn-primary">👥 My Customers</a>
+                <a href="all-customers.html" class="action-btn-primary">👥 My Customers</a>
                 <button class="action-btn-primary" onclick="alert('Call Log - Feature Coming')">📞 Call Customer</button>
-                <a href="sales-orders.html" class="action-btn-primary">📋 Orders</a>
+                <a href="all-orders.html" class="action-btn-primary">📋 Orders</a>
             </div>
 
             <!-- SALES STATUS -->

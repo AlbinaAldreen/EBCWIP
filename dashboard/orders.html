@@ -4,18 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders - Emily Bakes Cakes</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard-redesigned.css">
 </head>
 <body>
     <!-- HEADER -->
     <header class="header">
         <div class="header-left">
-            <div class="role-badge" id="staff-role">Staff</div>
-            <div class="manager-name" id="staff-name">Loading...</div>
+            <div class="header-logo">
+                <span class="logo-icon">🍰</span>
+                <div>
+                    <div class="logo-text">Emily Bakes</div>
+                    <div class="logo-subtext">CAKES</div>
+                </div>
+            </div>
+            <div class="header-user">
+                <div class="role-badge" id="staff-role">Staff</div>
+                <div class="manager-name" id="staff-name">Loading...</div>
+            </div>
         </div>
         <div class="header-right">
-            <div class="pickup-badge" id="header-pickup-count">0 pickups today</div>
-            <button class="header-btn" onclick="backToSite()">Back to Site</button>
+            <div class="header-stat">
+                <span>📦</span>
+                <span id="header-pickup-count">0</span>
+                <span class="header-stat-value">pickups today</span>
+            </div>
+            <button class="header-btn" onclick="backToSite()">← Back to Site</button>
             <button class="logout-btn header-btn" onclick="handleLogout()">Logout</button>
         </div>
     </header>
@@ -23,11 +36,12 @@
     <!-- LEFT NAVIGATION -->
     <nav class="nav-sidebar">
         <ul>
-            <li><a href="index.html" class="nav-link">Dashboard</a></li>
-            <li><a href="orders.html" class="nav-link active">Orders</a></li>
-            <li><a href="customers.html" class="nav-link">Customers</a></li>
-            <li><a href="reports.html" class="nav-link">Reports</a></li>
-            <li><a href="settings.html" class="nav-link">Settings</a></li>
+            <li><a href="index.html" class="nav-link">📊 Dashboard</a></li>
+            <li><a href="all-orders.html" class="nav-link active">📋 All Orders</a></li>
+            <li><a href="all-customers.html" class="nav-link">👥 All Customers</a></li>
+            <li><a href="reports.html" class="nav-link">📈 Reports</a></li>
+            <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
+            <li><a href="../order-form.html" class="nav-link">🎂 Order Form</a></li>
         </ul>
     </nav>
 
