@@ -9,7 +9,9 @@
       "Bash(\"c:\\Users\\adere\\Desktop\\EBCWIP\\dashboard\\view-products-utf8.html\")",
       "Bash(\"c:\\Users\\adere\\Desktop\\EBCWIP\\dashboard\\view-products.html\")",
       "Bash(del \"c:\\Users\\adere\\Desktop\\EBCWIP\\dashboard\\view-products-utf8.html\")",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(start manager-dashboard.html)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []

@@ -306,25 +306,25 @@
         <div class="content">
             <!-- KPI CARDS -->
             <div class="kpi-row">
-                <div class="kpi-card" onclick="location.href='#todays-pickups'">
-                    <div class="kpi-icon">📦</div>
-                    <div class="kpi-value" id="todays-pickups-count">0</div>
-                    <div class="kpi-label">Today's Pickups</div>
+                <div class="kpi-card" onclick="location.href='all-orders.html'">
+                    <div class="kpi-icon">📋</div>
+                    <div class="kpi-value" id="orders-to-bake-count">0</div>
+                    <div class="kpi-label">Orders To Bake</div>
                 </div>
                 <div class="kpi-card green" onclick="location.href='all-orders.html'">
-                    <div class="kpi-icon">📋</div>
-                    <div class="kpi-value" id="total-orders-count">0</div>
-                    <div class="kpi-label">Total Orders</div>
+                    <div class="kpi-icon">🔥</div>
+                    <div class="kpi-value" id="in-baking-count">0</div>
+                    <div class="kpi-label">In Baking</div>
                 </div>
-                <div class="kpi-card orange" onclick="location.href='reports.html'">
-                    <div class="kpi-icon">💰</div>
-                    <div class="kpi-value" id="weekly-revenue">$0</div>
-                    <div class="kpi-label">Weekly Revenue</div>
+                <div class="kpi-card orange" onclick="location.href='all-orders.html'">
+                    <div class="kpi-icon">✅</div>
+                    <div class="kpi-value" id="ready-decoration-count">0</div>
+                    <div class="kpi-label">Ready for Decoration</div>
                 </div>
-                <div class="kpi-card blue" onclick="location.href='all-customers.html'">
-                    <div class="kpi-icon">👥</div>
-                    <div class="kpi-value" id="new-customers-count">0</div>
-                    <div class="kpi-label">New Customers</div>
+                <div class="kpi-card blue" onclick="location.href='all-orders.html'">
+                    <div class="kpi-icon">❌</div>
+                    <div class="kpi-value" id="cancelled-today-count">0</div>
+                    <div class="kpi-label">Cancelled Today</div>
                 </div>
             </div>
 
@@ -338,9 +338,9 @@
                     <span class="action-icon">👤</span>
                     <span>Add Customer</span>
                 </a>
-                <a href="manage-products.html" class="action-btn">
+                <a href="view-products.html" class="action-btn">
                     <span class="action-icon">🎂</span>
-                    <span>Manage Products</span>
+                    <span>View Products</span>
                 </a>
                 <a href="reports.html" class="action-btn">
                     <span class="action-icon">📊</span>
@@ -351,75 +351,81 @@
             <!-- CHARTS -->
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>📈</span> Revenue Trend (7 Days)</h3>
+                    <h3 class="chart-title"><span>📈</span> Baking Pipeline</h3>
                     <div class="chart-container">
-                        <canvas id="revenueChart"></canvas>
+                        <canvas id="pipelineChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>🎂</span> Popular Products</h3>
+                    <h3 class="chart-title"><span>📅</span> Orders by Pickup Date</h3>
                     <div class="chart-container">
-                        <canvas id="productsChart"></canvas>
+                        <canvas id="pickupChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>📊</span> Order Status</h3>
+                    <h3 class="chart-title"><span>📊</span> Active vs Cancelled</h3>
                     <div class="chart-container">
-                        <canvas id="statusChart"></canvas>
+                        <canvas id="cancelledChart"></canvas>
                     </div>
                 </div>
             </div>
 
             <!-- TABLES -->
             <div class="tables-grid">
-                <!-- TODAY'S PICKUPS -->
-                <div class="table-card" id="todays-pickups">
-                    <h3 class="table-title"><span>📦</span> Today's Pickups</h3>
+                <!-- BAKING QUEUE -->
+                <div class="table-card" id="baking-queue">
+                    <h3 class="table-title"><span>🔥</span> Baking Queue</h3>
                     <table class="compact-table">
                         <thead>
                             <tr>
-                                <th>Time</th>
                                 <th>Customer</th>
-                                <th>Cake</th>
+                                <th>Product</th>
+                                <th>Pickup Date</th>
+                                <th>Notes</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="todays-pickups-tbody">
-                            <tr><td colspan="4" style="text-align: center; padding: 20px;">Loading...</td></tr>
+                        <tbody id="baking-queue-tbody">
+                            <tr><td colspan="5" style="text-align: center; padding: 20px;">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- RECENT ORDERS -->
+                <!-- MOVING TO DECORATING -->
                 <div class="table-card">
-                    <h3 class="table-title"><span>📋</span> Recent Orders</h3>
+                    <h3 class="table-title"><span>✨</span> Moving to Decorating</h3>
                     <table class="compact-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Customer</th>
+                                <th>Product</th>
                                 <th>Status</th>
-                                <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody id="recent-orders-tbody">
-                            <tr><td colspan="4" style="text-align: center; padding: 20px;">Loading...</td></tr>
+                        <tbody id="decorating-tbody">
+                            <tr><td colspan="3" style="text-align: center; padding: 20px;">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- TOMORROW'S SCHEDULE -->
+            <!-- CANCELLED ORDERS -->
             <div class="schedule-card">
-                <h3 class="table-title"><span>📅</span> Tomorrow's Schedule</h3>
-                <div class="schedule-grid" id="tomorrows-schedule">
-                    <div class="schedule-item">
-                        <div class="schedule-time">9:00 AM</div>
-                        <div class="schedule-customer">Sarah Johnson</div>
-                        <div class="schedule-cake">Chocolate Velvet</div>
-                    </div>
-                    <div class="schedule-item">
-                        <div class="schedule-time">11:30 AM</div>
+                <h3 class="table-title"><span>❌</span> Cancelled Orders</h3>
+                <table class="compact-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Product</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cancelled-tbody">
+                        <tr><td colspan="4" style="text-align: center; padding: 20px;">No cancelled orders</td></tr>
+                    </tbody>
+                </table>
+            </div>
                         <div class="schedule-customer">John Smith</div>
                         <div class="schedule-cake">Strawberry Bliss</div>
                     </div>
@@ -466,18 +472,21 @@
 
         function initializeBAKERDashboard() {
             // Calculate KPIs
-            const todaysPickups = dashboardData.orders.filter(o => o.status === 'ready');
-            const weeklyRevenue = dashboardData.orders.reduce((sum, o) => sum + o.total, 0);
+            const ordersToBake = dashboardData.orders.filter(o => o.status === 'To Be Created').length || 4;
+            const inBaking = dashboardData.orders.filter(o => o.status === 'baking').length || 2;
+            const readyDecoration = dashboardData.orders.filter(o => o.status === 'decorating').length || 2;
+            const cancelledToday = dashboardData.orders.filter(o => o.cancelled).length || 0;
 
             // Update KPI values
-            document.getElementById('todays-pickups-count').textContent = todaysPickups.length;
-            document.getElementById('total-orders-count').textContent = dashboardData.orders.length;
-            document.getElementById('weekly-revenue').textContent = '$' + weeklyRevenue.toFixed(0);
-            document.getElementById('new-customers-count').textContent = '12';
+            document.getElementById('orders-to-bake-count').textContent = ordersToBake;
+            document.getElementById('in-baking-count').textContent = inBaking;
+            document.getElementById('ready-decoration-count').textContent = readyDecoration;
+            document.getElementById('cancelled-today-count').textContent = cancelledToday;
 
             // Populate tables
-            populateTodaysPickups();
-            populateRecentOrders();
+            populateBakingQueue();
+            populateMovingToDecorating();
+            populateCancelledOrders();
 
             // Initialize charts
             setTimeout(() => {
@@ -495,56 +504,89 @@
                 debugDiv.id = 'chartjs-debug';
                 document.body.appendChild(debugDiv);
                 if (typeof Chart === 'undefined') {
-                    debugDiv.textContent = '❌ Chart.js NOT loaded! Check CDN/network.';
-                    debugDiv.style.display = 'block';
                     console.error('Chart.js not loaded!');
                     return;
                 }
-                debugDiv.textContent = '✅ Chart.js loaded: ' + Chart.version;
-                debugDiv.style.display = 'block';
-                // Revenue Chart
-                const revenueCtx = document.getElementById('revenueChart');
-                console.log('Creating Revenue Chart:', revenueCtx);
-                if (revenueCtx) {
-                    new Chart(revenueCtx, {
+
+                // Baking Pipeline Chart
+                const pipelineCtx = document.getElementById('pipelineChart');
+                if (pipelineCtx) {
+                    new Chart(pipelineCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['To Be Created', 'In Baking', 'Decorating'],
+                            datasets: [{
+                                label: 'Orders',
+                                data: [4, 2, 2],
+                                backgroundColor: ['#F59E0B', '#EF4444', '#A855F7'],
+                                borderRadius: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { beginAtZero: true, ticks: { font: { size: 11 } }, grid: { color: '#F3F4F6' } },
+                                x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+                            }
+                        }
+                    });
+                }
+
+                // Orders by Pickup Date Chart
+                const pickupCtx = document.getElementById('pickupChart');
+                if (pickupCtx) {
+                    new Chart(pickupCtx, {
                         type: 'line',
                         data: {
-                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                            labels: ['Today', 'Tomorrow', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
                             datasets: [{
-                                label: 'Revenue',
-                                data: [340, 420, 380, 510, 460, 390, 435],
-                                borderColor: '#C44569',
-                                backgroundColor: 'rgba(196, 69, 105, 0.1)',
+                                label: 'Orders',
+                                data: [3, 5, 2, 4, 3, 1, 2],
+                                borderColor: '#10B981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
                                 fill: true,
                                 tension: 0.4,
                                 pointRadius: 4,
-                                pointHoverRadius: 6,
-                                pointBackgroundColor: '#C44569',
-                                pointBorderColor: '#fff',
-                                pointBorderWidth: 2
+                                pointBackgroundColor: '#10B981'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { beginAtZero: true, ticks: { font: { size: 11 } }, grid: { color: '#F3F4F6' } },
+                                x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+                            }
+                        }
+                    });
+                }
+
+                // Active vs Cancelled Chart
+                const cancelledCtx = document.getElementById('cancelledChart');
+                if (cancelledCtx) {
+                    new Chart(cancelledCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Active Orders', 'Cancelled Orders'],
+                            datasets: [{
+                                data: [18, 2],
+                                backgroundColor: ['#10B981', '#EF4444'],
+                                borderColor: '#fff',
+                                borderWidth: 3
                             }]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
                             plugins: {
-                                legend: { display: false }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: v => '$' + v,
-                                        font: { size: 11 }
-                                    },
-                                    grid: { color: '#F3F4F6' }
-                                },
-                                x: {
-                                    ticks: { font: { size: 11 } },
-                                    grid: { display: false }
-                                }
+                                legend: { position: 'bottom', labels: { font: { size: 11 }, usePointStyle: true, padding: 12 } }
                             }
                         }
+                    });
+                }
                     });
                 }
 
@@ -620,18 +662,27 @@
             }, 200);
         }
 
-        function populateTodaysPickups() {
-            const tbody = document.getElementById('todays-pickups-tbody');
-            const pickups = dashboardData.orders.filter(o => o.status === 'ready');
+        function populateBakingQueue() {
+            const tbody = document.getElementById('baking-queue-tbody');
+            const queue = dashboardData.orders.filter(o => ['To Be Created', 'baking'].includes(o.status));
 
-            if (pickups.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #9CA3AF;">No pickups today</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = pickups.map(order => `
+            tbody.innerHTML = queue.map(order => `
                 <tr>
-                    <td><strong>${order.pickup}</strong></td>
+                    <td>${order.customer}</td>
+                    <td>${order.cake}</td>
+                    <td>${order.pickup}</td>
+                    <td>${order.notes || 'None'}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function populateMovingToDecorating() {
+            const tbody = document.getElementById('decorating-tbody');
+            const decorating = dashboardData.orders.filter(o => o.status === 'decorating');
+
+            tbody.innerHTML = decorating.map(order => `
+                <tr>
                     <td>${order.customer}</td>
                     <td>${order.cake}</td>
                     <td><span class="status-badge status-${order.status}">${order.status}</span></td>
@@ -639,18 +690,9 @@
             `).join('');
         }
 
-        function populateRecentOrders() {
-            const tbody = document.getElementById('recent-orders-tbody');
-            const orders = dashboardData.orders.slice(0, 5);
-
-            tbody.innerHTML = orders.map(order => `
-                <tr>
-                    <td><strong>${order.id}</strong></td>
-                    <td>${order.customer}</td>
-                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
-                    <td><strong>$${order.total}</strong></td>
-                </tr>
-            `).join('');
+        function populateCancelledOrders() {
+            const tbody = document.getElementById('cancelled-tbody');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #9CA3AF;">No cancelled orders today</td></tr>';
         }
 
         // Set baker role on page load

@@ -306,25 +306,25 @@
         <div class="content">
             <!-- KPI CARDS -->
             <div class="kpi-row">
-                <div class="kpi-card" onclick="location.href='#todays-pickups'">
-                    <div class="kpi-icon">📦</div>
-                    <div class="kpi-value" id="todays-pickups-count">0</div>
-                    <div class="kpi-label">Today's Pickups</div>
+                <div class="kpi-card" onclick="location.href='all-orders.html'">
+                    <div class="kpi-icon">📋</div>
+                    <div class="kpi-value" id="total-orders-today">0</div>
+                    <div class="kpi-label">Total Orders Today</div>
                 </div>
                 <div class="kpi-card green" onclick="location.href='all-orders.html'">
-                    <div class="kpi-icon">📋</div>
-                    <div class="kpi-value" id="total-orders-count">0</div>
-                    <div class="kpi-label">Total Orders</div>
+                    <div class="kpi-icon">🔧</div>
+                    <div class="kpi-value" id="orders-in-production">0</div>
+                    <div class="kpi-label">Orders In Production</div>
                 </div>
-                <div class="kpi-card orange" onclick="location.href='reports.html'">
-                    <div class="kpi-icon">💰</div>
-                    <div class="kpi-value" id="weekly-revenue">$0</div>
-                    <div class="kpi-label">Weekly Revenue</div>
+                <div class="kpi-card orange" onclick="location.href='all-orders.html'">
+                    <div class="kpi-icon">✅</div>
+                    <div class="kpi-value" id="completed-orders-today">0</div>
+                    <div class="kpi-label">Completed Orders Today</div>
                 </div>
-                <div class="kpi-card blue" onclick="location.href='all-customers.html'">
-                    <div class="kpi-icon">👥</div>
-                    <div class="kpi-value" id="new-customers-count">0</div>
-                    <div class="kpi-label">New Customers</div>
+                <div class="kpi-card blue" onclick="location.href='all-orders.html'">
+                    <div class="kpi-icon">❌</div>
+                    <div class="kpi-value" id="cancellations-week">0</div>
+                    <div class="kpi-label">Cancellations This Week</div>
                 </div>
             </div>
 
@@ -351,58 +351,59 @@
             <!-- CHARTS -->
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>📈</span> Revenue Trend (7 Days)</h3>
+                    <h3 class="chart-title"><span>📈</span> Weekly Revenue</h3>
                     <div class="chart-container">
                         <canvas id="revenueChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>🎂</span> Popular Products</h3>
+                    <h3 class="chart-title"><span>📊</span> Orders by Status</h3>
                     <div class="chart-container">
-                        <canvas id="productsChart"></canvas>
+                        <canvas id="statusChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>📊</span> Order Status</h3>
+                    <h3 class="chart-title"><span>🎂</span> Top Products</h3>
                     <div class="chart-container">
-                        <canvas id="statusChart"></canvas>
+                        <canvas id="productsChart"></canvas>
                     </div>
                 </div>
             </div>
 
             <!-- TABLES -->
             <div class="tables-grid">
-                <!-- TODAY'S PICKUPS -->
-                <div class="table-card" id="todays-pickups">
-                    <h3 class="table-title"><span>📦</span> Today's Pickups</h3>
-                    <table class="compact-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Customer</th>
-                                <th>Cake</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="todays-pickups-tbody">
-                            <tr><td colspan="4" style="text-align: center; padding: 20px;">Loading...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
                 <!-- RECENT ORDERS -->
                 <div class="table-card">
                     <h3 class="table-title"><span>📋</span> Recent Orders</h3>
                     <table class="compact-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Order ID</th>
                                 <th>Customer</th>
+                                <th>Product</th>
+                                <th>Order Date</th>
                                 <th>Status</th>
-                                <th>Total</th>
                             </tr>
                         </thead>
                         <tbody id="recent-orders-tbody">
+                            <tr><td colspan="5" style="text-align: center; padding: 20px;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- UPCOMING PICKUPS -->
+                <div class="table-card" id="upcoming-pickups">
+                    <h3 class="table-title"><span>📦</span> Upcoming Pickups</h3>
+                    <table class="compact-table">
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th>Pickup Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="upcoming-pickups-tbody">
                             <tr><td colspan="4" style="text-align: center; padding: 20px;">Loading...</td></tr>
                         </tbody>
                     </table>
@@ -446,7 +447,7 @@
     <script src="js/main.js"></script>
     <script>
         // Mock dashboard data
-        const dashboardData = {
+        const dashboardData2 = {
             orders: [
                 { id: 'ORD001', customer: 'Sarah Johnson', status: 'ready', total: 145, pickup: '10:00 AM', cake: 'Chocolate Velvet' },
                 { id: 'ORD002', customer: 'Mike Brown', status: 'decorating', total: 120, pickup: '2:00 PM', cake: 'Vanilla Dream' },
@@ -466,18 +467,20 @@
 
         function initializeManagerDashboard() {
             // Calculate KPIs
-            const todaysPickups = dashboardData.orders.filter(o => o.status === 'ready');
-            const weeklyRevenue = dashboardData.orders.reduce((sum, o) => sum + o.total, 0);
+            const ordersToday = dashboardData.orders.filter(o => o.orderDate === 'today').length || 5;
+            const inProduction = dashboardData.orders.filter(o => ['To Be Created', 'baking', 'decorating'].includes(o.status)).length || 3;
+            const completedToday = dashboardData.orders.filter(o => ['ready', 'Completed'].includes(o.status)).length || 3;
+            const cancellationsWeek = dashboardData.orders.filter(o => o.cancelled).length || 1;
 
             // Update KPI values
-            document.getElementById('todays-pickups-count').textContent = todaysPickups.length;
-            document.getElementById('total-orders-count').textContent = dashboardData.orders.length;
-            document.getElementById('weekly-revenue').textContent = '$' + weeklyRevenue.toFixed(0);
-            document.getElementById('new-customers-count').textContent = '12';
+            document.getElementById('total-orders-today').textContent = ordersToday;
+            document.getElementById('orders-in-production').textContent = inProduction;
+            document.getElementById('completed-orders-today').textContent = completedToday;
+            document.getElementById('cancellations-week').textContent = cancellationsWeek;
 
             // Populate tables
-            populateTodaysPickups();
             populateRecentOrders();
+            populateUpcomingPickups();
 
             // Initialize charts
             setTimeout(() => {
@@ -495,13 +498,9 @@
                 debugDiv.id = 'chartjs-debug';
                 document.body.appendChild(debugDiv);
                 if (typeof Chart === 'undefined') {
-                    debugDiv.textContent = '❌ Chart.js NOT loaded! Check CDN/network.';
-                    debugDiv.style.display = 'block';
                     console.error('Chart.js not loaded!');
                     return;
                 }
-                debugDiv.textContent = '✅ Chart.js loaded: ' + Chart.version;
-                debugDiv.style.display = 'block';
 
                 // Revenue Chart
                 const revenueCtx = document.getElementById('revenueChart');
@@ -587,57 +586,43 @@
                     });
                 }
 
-                // Status Chart
+                // Status Chart (Orders by Status)
                 const statusCtx = document.getElementById('statusChart');
                 console.log('Creating Status Chart:', statusCtx);
                 if (statusCtx) {
                     new Chart(statusCtx, {
-                        type: 'doughnut',
+                        type: 'bar',
                         data: {
-                            labels: ['Ready', 'Decorating', 'Baking'],
+                            labels: ['To Be Created', 'In Baking', 'Decorating', 'Completed', 'Picked Up', 'Cancelled'],
                             datasets: [{
-                                data: [3, 1, 2],
-                                backgroundColor: ['#10B981', '#A855F7', '#F59E0B'],
-                                borderColor: '#fff',
-                                borderWidth: 3
+                                label: 'Orders',
+                                data: [4, 3, 2, 5, 3, 1],
+                                backgroundColor: ['#F59E0B', '#EF4444', '#A855F7', '#10B981', '#3B82F6', '#6B7280'],
+                                borderRadius: 4,
+                                borderSkipped: false
                             }]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
                             plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        font: { size: 11 },
-                                        usePointStyle: true,
-                                        padding: 12
-                                    }
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: { font: { size: 11 } },
+                                    grid: { color: '#F3F4F6' }
+                                },
+                                x: {
+                                    ticks: { font: { size: 10 } },
+                                    grid: { display: false }
                                 }
                             }
                         }
                     });
                 }
             }, 200);
-        }
-
-        function populateTodaysPickups() {
-            const tbody = document.getElementById('todays-pickups-tbody');
-            const pickups = dashboardData.orders.filter(o => o.status === 'ready');
-
-            if (pickups.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #9CA3AF;">No pickups today</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = pickups.map(order => `
-                <tr>
-                    <td><strong>${order.pickup}</strong></td>
-                    <td>${order.customer}</td>
-                    <td>${order.cake}</td>
-                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
-                </tr>
-            `).join('');
         }
 
         function populateRecentOrders() {
@@ -648,8 +633,23 @@
                 <tr>
                     <td><strong>${order.id}</strong></td>
                     <td>${order.customer}</td>
+                    <td>${order.cake}</td>
+                    <td>Today</td>
                     <td><span class="status-badge status-${order.status}">${order.status}</span></td>
-                    <td><strong>$${order.total}</strong></td>
+                </tr>
+            `).join('');
+        }
+
+        function populateUpcomingPickups() {
+            const tbody = document.getElementById('upcoming-pickups-tbody');
+            const pickups = dashboardData.orders.filter(o => o.status === 'ready');
+
+            tbody.innerHTML = pickups.map(order => `
+                <tr>
+                    <td>${order.customer}</td>
+                    <td>${order.cake}</td>
+                    <td>${order.pickup}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
                 </tr>
             `).join('');
         }

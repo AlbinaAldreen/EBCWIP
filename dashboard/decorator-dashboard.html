@@ -306,25 +306,25 @@
         <div class="content">
             <!-- KPI CARDS -->
             <div class="kpi-row">
-                <div class="kpi-card" onclick="location.href='#todays-pickups'">
-                    <div class="kpi-icon">📦</div>
-                    <div class="kpi-value" id="todays-pickups-count">0</div>
-                    <div class="kpi-label">Today's Pickups</div>
+                <div class="kpi-card" onclick="location.href='all-orders.html'">
+                    <div class="kpi-icon">🎨</div>
+                    <div class="kpi-value" id="needs-decoration-count">0</div>
+                    <div class="kpi-label">Needs Decoration</div>
                 </div>
                 <div class="kpi-card green" onclick="location.href='all-orders.html'">
-                    <div class="kpi-icon">📋</div>
-                    <div class="kpi-value" id="total-orders-count">0</div>
-                    <div class="kpi-label">Total Orders</div>
+                    <div class="kpi-icon">✅</div>
+                    <div class="kpi-value" id="completed-today-count">0</div>
+                    <div class="kpi-label">Completed Today</div>
                 </div>
-                <div class="kpi-card orange" onclick="location.href='reports.html'">
-                    <div class="kpi-icon">💰</div>
-                    <div class="kpi-value" id="weekly-revenue">$0</div>
-                    <div class="kpi-label">Weekly Revenue</div>
+                <div class="kpi-card orange" onclick="location.href='all-orders.html'">
+                    <div class="kpi-icon">⚡</div>
+                    <div class="kpi-value" id="urgent-orders-count">0</div>
+                    <div class="kpi-label">Urgent Orders</div>
                 </div>
-                <div class="kpi-card blue" onclick="location.href='all-customers.html'">
-                    <div class="kpi-icon">👥</div>
-                    <div class="kpi-value" id="new-customers-count">0</div>
-                    <div class="kpi-label">New Customers</div>
+                <div class="kpi-card blue" onclick="location.href='all-orders.html'">
+                    <div class="kpi-icon">📝</div>
+                    <div class="kpi-value" id="orders-with-notes-count">0</div>
+                    <div class="kpi-label">Orders With Notes</div>
                 </div>
             </div>
 
@@ -338,9 +338,9 @@
                     <span class="action-icon">👤</span>
                     <span>Add Customer</span>
                 </a>
-                <a href="manage-products.html" class="action-btn">
+                <a href="view-products.html" class="action-btn">
                     <span class="action-icon">🎂</span>
-                    <span>Manage Products</span>
+                    <span>View Products</span>
                 </a>
                 <a href="reports.html" class="action-btn">
                     <span class="action-icon">📊</span>
@@ -351,21 +351,21 @@
             <!-- CHARTS -->
             <div class="charts-grid">
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>📈</span> Revenue Trend (7 Days)</h3>
+                    <h3 class="chart-title"><span>🎨</span> Decoration Pipeline</h3>
                     <div class="chart-container">
-                        <canvas id="revenueChart"></canvas>
+                        <canvas id="pipelineChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>🎂</span> Popular Products</h3>
+                    <h3 class="chart-title"><span>📝</span> Orders With vs Without Notes</h3>
                     <div class="chart-container">
-                        <canvas id="productsChart"></canvas>
+                        <canvas id="notesChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>📊</span> Order Status</h3>
+                    <h3 class="chart-title"><span>📈</span> Completed By Day</h3>
                     <div class="chart-container">
-                        <canvas id="statusChart"></canvas>
+                        <canvas id="completedChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -495,13 +495,9 @@
                 debugDiv.id = 'chartjs-debug';
                 document.body.appendChild(debugDiv);
                 if (typeof Chart === 'undefined') {
-                    debugDiv.textContent = '❌ Chart.js NOT loaded! Check CDN/network.';
-                    debugDiv.style.display = 'block';
                     console.error('Chart.js not loaded!');
                     return;
                 }
-                debugDiv.textContent = '✅ Chart.js loaded: ' + Chart.version;
-                debugDiv.style.display = 'block';
 
                 // Revenue Chart
                 const revenueCtx = document.getElementById('revenueChart');

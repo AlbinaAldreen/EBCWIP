@@ -320,25 +320,25 @@
         <div class="content">
             <!-- KPI CARDS -->
             <div class="kpi-row">
-                <div class="kpi-card">
+                <div class="kpi-card" onclick="location.href='#recent-transactions'">
                     <div class="kpi-icon">💰</div>
-                    <div class="kpi-value" id="monthly-revenue">$12,450</div>
-                    <div class="kpi-label">Monthly Revenue</div>
+                    <div class="kpi-value" id="weekly-revenue">$0</div>
+                    <div class="kpi-label">Weekly Revenue</div>
                 </div>
-                <div class="kpi-card orange">
+                <div class="kpi-card orange" onclick="location.href='#recent-transactions'">
                     <div class="kpi-icon">💸</div>
-                    <div class="kpi-value" id="monthly-expenses">$8,200</div>
-                    <div class="kpi-label">Monthly Expenses</div>
+                    <div class="kpi-value" id="deposits-collected">$0</div>
+                    <div class="kpi-label">Deposits Collected</div>
                 </div>
-                <div class="kpi-card green">
-                    <div class="kpi-icon">📊</div>
-                    <div class="kpi-value" id="net-profit">$4,250</div>
-                    <div class="kpi-label">Net Profit</div>
-                </div>
-                <div class="kpi-card blue">
+                <div class="kpi-card green" onclick="location.href='#outstanding-invoices'">
                     <div class="kpi-icon">🔔</div>
-                    <div class="kpi-value" id="outstanding-balance">$2,340</div>
+                    <div class="kpi-value" id="outstanding-balance">$0</div>
                     <div class="kpi-label">Outstanding Balances</div>
+                </div>
+                <div class="kpi-card blue" onclick="location.href='reports.html'">
+                    <div class="kpi-icon">✅</div>
+                    <div class="kpi-value" id="completed-orders-week">0</div>
+                    <div class="kpi-label">Completed Orders</div>
                 </div>
             </div>
 
@@ -377,7 +377,7 @@
                     </div>
                 </div>
                 <div class="chart-card">
-                    <h3 class="chart-title"><span>📊</span> Weekly Profit Comparison</h3>
+                    <h3 class="chart-title"><span>📊</span> Weekly Profit</h3>
                     <div class="chart-container">
                         <canvas id="profitChart"></canvas>
                     </div>
